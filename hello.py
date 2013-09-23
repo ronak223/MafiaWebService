@@ -4,14 +4,12 @@ from Models.user import User
 
 app = Flask(__name__)
 
-test_user = User()
-test_user.setUsername("Ronak")
-test_user.setPassword("testpass")
-test_user.sendToDb()
-
-
 @app.route('/')
 def index():
+    test_user = User()
+    test_user.setUsername("Ronak")
+    test_user.setPassword("testpass")
+    test_user.sendToDb()
     return 'Index Page'
 
 @app.route('/hello')
