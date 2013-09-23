@@ -7,10 +7,9 @@ Created on Sep 20, 2013
 
 import pymongo
 from pymongo import MongoClient
-import os
 
-MONGO_URL = os.environ.get('MONGOHQ_URL')
-client = MongoClient(MONGO_URL)
+#MONGO_URL = os.environ.get('MONGOHQ_URL')
+client = MongoClient(MONGOHQ_URL)
 # Specify the database
 db = client.app18266596
 user_collection = db.users
@@ -43,5 +42,5 @@ class User(object):
                     "password": self.password
                     }
         cur_user_id = user_collection.insert(cur_user)
-
+        
         

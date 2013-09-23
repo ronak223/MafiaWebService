@@ -1,6 +1,5 @@
 from flask import Flask
 from pymongo import MongoClient
-import os
 from Models.user import User
 
 app = Flask(__name__)
