@@ -5,11 +5,13 @@ Created on Sep 20, 2013
 
 '''
 
-import pymongo
+import os
+
 from pymongo import MongoClient
 
-#MONGO_URL = os.environ.get('MONGOHQ_URL')
-client = MongoClient(MONGOHQ_URL)
+
+MONGO_URL = os.environ['MONGOHQ_URL']
+client = MongoClient(MONGO_URL);
 # Specify the database
 db = client.app18266596
 user_collection = db.users
