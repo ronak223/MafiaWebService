@@ -2,7 +2,18 @@
 Created on Sep 20, 2013
 
 @author: Ronak
+
 '''
+
+import pymongo
+from pymongo import MongoClient
+import os
+
+MONGO_URL = os.environ.get('MONGOHQ_URL')
+client = MongoClient(MONGO_URL)
+# Specify the database
+db = client.app18266596
+user_collection = db.users
 
 class User(object):
     '''
@@ -27,5 +38,10 @@ class User(object):
     
     def getHashedPassword(self):
         return self.hashedPassword
+    def sendToDb(self):
+        cur_user = {"name": self.username,
+                    "password": self.password
+                    }
+        cur_user_id = user_collection.insert(cur_user)
 
         
