@@ -11,7 +11,7 @@ def hello():
     
 @app.route('/testadd/<int:number>')
 def add_this(number):
-    cur_sum = number + 5
+    cur_sum = number + 10
     return "%d" % cur_sum	
 
 
