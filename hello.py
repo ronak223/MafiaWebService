@@ -29,7 +29,7 @@ def index():
     
     cur_user_id = users_collection.insert(cur_user)
     #test_user.sendToDb()
-    return "" + cur_user_id
+    return "Index Page"
 
 @app.route('/hello')
 def hello():
