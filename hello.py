@@ -12,7 +12,7 @@ def index():
     test_user.setUsername("Ronak")
     test_user.setPassword("testpass")
     
-    client = MongoClient(os.environ['MONGOHQ_URL'])
+    client = MongoClient(os.environ.get('MONGOHQ_URL'))
     db = client.app18266596
     users_collection = db.users
     
@@ -20,7 +20,7 @@ def index():
                 "password": test_user.getHashedPassword()
                 }
     
-    cur_user_id = users_collection.insert(cur_user)
+    users_collection.insert(cur_user)
     #test_user.sendToDb()
     return "Index Page"
 
@@ -30,7 +30,7 @@ def hello():
     
 @app.route('/testadd/<int:number>')
 def add_this(number):
-    cur_sum = number + 10
+    cur_sum = number + 3
     return "%d" % cur_sum	
 
 
