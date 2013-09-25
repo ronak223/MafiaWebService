@@ -2,12 +2,15 @@ from flask import Flask
 from pymongo import MongoClient
 from Models.user import User
 import os
+from DAOs.playersDAO import PlayerDAO
+from DAOs.userDAO import UserDAO
 
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    '''
     test_user = User()
     test_user.setUsername("Ronak")
     test_user.setPassword("testpass")
@@ -22,6 +25,14 @@ def index():
     
     users_collection.insert(cur_user)
     #test_user.sendToDb()
+    '''
+    test_playerDAO = PlayerDAO()
+    test_usersDAO = UserDAO()
+    
+    test_playerDAO.testDatabase()
+    test_usersDAO.testUserConnection()
+    
+    
     return "Index Page"
 
 @app.route('/hello')

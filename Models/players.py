@@ -8,12 +8,14 @@ class Player(object):
     '''
     Represents players that are actually under the username.
     '''
-
+    #image
 
     def __init__(self):
         self.playerID=None
         self.alignment=None
         self.isDead=False
+        #to show who has player has voted to kill
+        self.votedAgainst=None
         self.location=[]
         
     def isWerewolf(self):
