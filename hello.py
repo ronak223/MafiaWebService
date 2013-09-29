@@ -37,6 +37,16 @@ def index():
     test_killsDAO = KillDAO()
     test_gameDAO = GameDAO()
     
+    test_gameDAO.switchDayNight();
+    
+    killPlayer("ronak223", "brosciusko")
+    
+    
+    #startGame("ronak223", 20)
+    #game = test_gameDAO.getGame()
+    
+    #loc = getCurrentLocation("ronak223")
+    
     #startGame("ronak223", 20)
     
     #temp_list = playersNearTo("ronak223", 10)
@@ -44,7 +54,9 @@ def index():
     
     #test_playerDAO.updatePlayer("brosciusko", "isDead", True)
 
-    restartGame("ronak223", 16)
+    #restartGame("ronak223", 16)
+    #placeVote("ronak223", "kmwilli")
+    #killPlayer("ronak223", "kmwilli")
     '''
     test_kill = Kill()
     test_kill.setLocation(50, -190)

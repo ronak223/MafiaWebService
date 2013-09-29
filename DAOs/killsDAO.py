@@ -23,7 +23,7 @@ class KillDAO(object):
         cur_kill = {"killerID": killObj.getKillerID(),
                       "victimID": killObj.getVictimID(),
                       "timestamp": killObj.getTimestamp(),
-                      #"location": killObj.getLocation()
+                      "location": killObj.getLocation()
                       }
         
         KILLS_COLLECTION.insert(cur_kill)

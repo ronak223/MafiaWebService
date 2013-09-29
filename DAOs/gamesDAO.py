@@ -4,6 +4,7 @@ Created on Sep 25, 2013
 @author: Ronak
 '''
 from DAOs import *
+from Models.games import Game
 
 class GameDAO(object):
     '''
@@ -19,11 +20,20 @@ class GameDAO(object):
     def createGame(self, gameObj):
         cur_game = {"creationTimestamp": gameObj.getStartTimestamp(),
                       "dayNightFrequency": gameObj.getFrequency(),
+                      "isNight": gameObj.isNight
                       }
         GAMES_COLLECTION.insert(cur_game)
         
-    def restartGame(self, userID, new_freq):
-        #TODO: Remove all players and kill, and reset according to given frequency, only if current user is admin
+    def switchDayNight(self):
+        cur_game = self.getGame()
+        if cur_game["isNight"] == True:
+            GAMES_COLLECTION.update({}, {"$set": {"isNight": False}})
+        else:
+            GAMES_COLLECTION.update({}, {"$set": {"isNight": True}})
         return
+    
+    def getGame(self):
+        cur_game_dict = GAMES_COLLECTION.find_one()
+        return cur_game_dict
         
         
