@@ -8,15 +8,15 @@ class Player(object):
     '''
     Represents players that are actually under the username.
     '''
-    #image
 
     def __init__(self):
-        self.playerID=None
+        self.userID=None
         self.alignment=None
-        self.isDead=False
+        self.isDead = False
         #to show who has player has voted to kill
-        self.votedAgainst=None
+        self.votedAgainst=""
         self.location=[]
+        self.isAdmin = False
         
     def isWerewolf(self):
         if(self.alignment=="Werewolf"):
@@ -24,23 +24,29 @@ class Player(object):
         else:
             return False
         
-    def getPlayerID(self):
-        return self.playerID
+    def setAlignment(self, alignment):
+        self.alignment = alignment
+        
+    def getAlignment(self):
+        return self.alignment
+        
+    def getUserID(self):
+        return self.userID
     
-    def setPlayerID(self, playerID):
-        self.playerID = playerID
+    def setUserID(self, playerID):
+        self.userID = playerID
     
     def isDead(self):
         return self.isDead
     
     def setDead(self):
         self.isDead = True
-        
-    def setLatitude(self, latitude):
-        self.location[0] = latitude
     
-    def setLongitude(self, longitude):
-        self.location[1] = longitude
+    def getVotedAgainst(self):
+        return self.votedAgainst
+    
+    def setVotedAgainst(self, voted_against):
+        self.votedAgainst = voted_against  
         
     def getLatitude(self):
         return self.location[0]
@@ -52,8 +58,14 @@ class Player(object):
         return self.location
     
     def setLocation(self, latitude, longitude):
-        self.location[0] = latitude
-        self.location[1] = longitude
+        self.location.append(latitude)
+        self.location.append(longitude)
+        
+    def isAdmin(self):
+        return self.isAdmin
+    
+    def makeAdmin(self):
+        self.isAdmin = True
     
     
            

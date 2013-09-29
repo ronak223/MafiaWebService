@@ -4,6 +4,12 @@ from Models.user import User
 import os
 from DAOs.playersDAO import PlayerDAO
 from DAOs.userDAO import UserDAO
+from DAOs.killsDAO import KillDAO
+from DAOs.gamesDAO import GameDAO
+from Models.players import *
+from Models.user import *
+from Models.kills import *
+from Service.GameService import *
 
 
 app = Flask(__name__)
@@ -28,21 +34,56 @@ def index():
     '''
     test_playerDAO = PlayerDAO()
     test_usersDAO = UserDAO()
+    test_killsDAO = KillDAO()
+    test_gameDAO = GameDAO()
     
-    test_playerDAO.testDatabase()
-    test_usersDAO.testUserConnection()
+    #startGame("ronak223", 20)
+    
+    #temp_list = playersNearTo("ronak223", 10)
+    #count = len(temp_list)
+    
+    #test_playerDAO.updatePlayer("brosciusko", "isDead", True)
+
+    restartGame("ronak223", 16)
+    '''
+    test_kill = Kill()
+    test_kill.setLocation(50, -190)
+    test_kill.setKillerID("ronak223")
+    test_kill.setVictimID("kevinwilliamson")
+    test_kill.setTimestamp()
+    
+    test_killsDAO.registerKill(test_kill)
+    '''
+    
+    '''
+    test_player = Player()
+    test_player.setUserID("brosciusko")
+    test_player.setAlignment("Townsperson")
+    test_player.setLocation(10, -59)
+    test_player.makeAdmin()
+    test_playerDAO.setPlayer(test_player)
+    '''
+    
+    #test_user = User()
+    #test_user.setUserID("ronak223")
+    #test_user.setPassword("ronakp")
+    
+    #test_usersDAO.registerUser(test_user)
+    #login_message = test_usersDAO.loginUser("ronak223", "ronakp")
+    #login_message = test_usersDAO.isLoggedIn("ronak223")
+    #isRegged = test_usersDAO.registerUser(test_user)
+    #isLoggedIn = test_usersDAO.loginUser(test_user.getUserID(), test_user.getHashedPassword())
+    #test_playerDAO.testDatabase()
+    #test_usersDAO.testUserConnection()
     
     
-    return "Index Page"
+    #return temp_list[0]["userID"]
+    #test_player = testingGetPlayer("ronak223")
+    return "INDEX PAGE"
 
 @app.route('/hello')
 def hello():
     return 'Hello World'
-    
-@app.route('/testadd/<int:number>')
-def add_this(number):
-    cur_sum = number + 3
-    return "%d" % cur_sum	
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ Created on Sep 23, 2013
 '''
 from datetime import datetime
 
-class Kills(object):
+class Kill(object):
     '''
     Class that will denote kills
     '''
@@ -15,10 +15,10 @@ class Kills(object):
         '''
         Constructor
         '''
-        self.killerID=None
-        self.victimID=None
-        self.timestamp=None
-        self.kill_location=[]
+        self.location = []
+        self.killerID=""
+        self.victimID=""
+        self.timestamp=""
         
     def setKillerID(self, killerID):
         self.killerID=killerID
@@ -38,9 +38,9 @@ class Kills(object):
     def getTimestamp(self):
         return self.timestamp
     
-    def setKillLocation(self, latitude, longitude):
-        self.kill_location[0] = latitude
-        self.kill_location[1] = longitude
+    def setLocation(self, latitude, longitude):
+        self.location.append(latitude)
+        self.location.append(longitude)
         
-    def getKillLocation(self):
-        return self.kill_location
+    def getLocation(self):
+        return self.location

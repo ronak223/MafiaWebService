@@ -5,28 +5,35 @@ Created on Sep 20, 2013
 
 '''
 
+from Crypto.Hash import MD5
+
 class User(object):
     '''
-    classdocs
+    Stores individual user details
     '''
     def __init__(self):
         '''
         Constructor
         '''
-        self.username = None
+        self.userID = None
         self.hashedPassword = None
+        self.loggedIn = False
         
     def setPassword(self, password):
-        #TODO: Needs hash function
-        self.hashedPassword = password
+        #saving hashed password
+        hashed = MD5.new(password).hexdigest()
+        self.hashedPassword = hashed
         
-    def setUsername(self, username):
-        self.username = username
+    def setUserID(self, username):
+        self.userID = username
         
-    def getUsername(self):
-        return self.username
+    def getUserID(self):
+        return self.userID
     
     def getHashedPassword(self):
         return self.hashedPassword
+    
+    def isLoggedIn(self):
+        return self.loggedIn
         
         

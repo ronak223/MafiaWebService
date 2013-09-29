@@ -7,7 +7,7 @@ from datetime import datetime
 
 class Game(object):
     '''
-    For controlling overarching games.
+    For settings parameters of current game.
     '''
 
 
@@ -15,11 +15,11 @@ class Game(object):
         '''
         Constructor
         '''
-        self.creationTime = datetime.now()
+        self.creationTimestamp = datetime.now()
         self.dayNightFrequency = 24
         
     def getStartTimestamp(self):
-        return self.creationTime
+        return self.creationTimestamp
     
     def setFrequency(self, freq):
         self.dayNightFrequency = freq

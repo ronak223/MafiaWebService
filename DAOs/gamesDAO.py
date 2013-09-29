@@ -7,7 +7,7 @@ from DAOs import *
 
 class GameDAO(object):
     '''
-    classdocs
+    manages game parameters in DB
     '''
 
 
@@ -15,5 +15,15 @@ class GameDAO(object):
         '''
         Constructor
         '''
+        
+    def createGame(self, gameObj):
+        cur_game = {"creationTimestamp": gameObj.getStartTimestamp(),
+                      "dayNightFrequency": gameObj.getFrequency(),
+                      }
+        GAMES_COLLECTION.insert(cur_game)
+        
+    def restartGame(self, userID, new_freq):
+        #TODO: Remove all players and kill, and reset according to given frequency, only if current user is admin
+        return
         
         
