@@ -4,6 +4,7 @@ Created on Sep 25, 2013
 @author: Ronak
 '''
 from DAOs import *
+from Models.user import User
 from Crypto.Hash import MD5
 
 class UserDAO(object):
@@ -13,8 +14,6 @@ class UserDAO(object):
 
 
     def __init__(self):
-        #self.username = None
-        #self.hashedPassword = None
         '''
         Constructor
         '''
@@ -22,9 +21,16 @@ class UserDAO(object):
     def getUser(self, user):
         USERS_COLLECTION.find_one({"username": "Ronak"})
         
-    def registerUser(self, user):
-        cur_user = {"userID": user.getUserID(),
-                "password": user.getHashedPassword(),
+    def registerUser(self, userID, password):
+        for user in USERS_COLLECTION.find():
+            if user["userID"] == userID:
+                return "Username already exists, try another."
+            
+        new_user = User()
+        new_user.setUserID(userID)
+        new_user.setPassword(password)
+        cur_user = {"userID": new_user.getUserID(),
+                "password": new_user.getHashedPassword(),
                 "loggedIn": False
                 }
         USERS_COLLECTION.insert(cur_user)

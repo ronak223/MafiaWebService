@@ -23,7 +23,7 @@ class KillDAO(object):
         cur_kill = {"killerID": killObj.getKillerID(),
                       "victimID": killObj.getVictimID(),
                       "timestamp": killObj.getTimestamp(),
-                      "location": killObj.getLocation()
+                      "location_2d": killObj.getLocation()
                       }
         
         KILLS_COLLECTION.insert(cur_kill)
@@ -32,5 +32,6 @@ class KillDAO(object):
         kills_list = []
         for kill in KILLS_COLLECTION:
             kills_list.append(kill)
+        return kills_list
             
         

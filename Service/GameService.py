@@ -5,9 +5,9 @@ Created on Sep 25, 2013
 '''
 
 from DAOs import *
-from DAOs.playersDAO import PlayerDAO
 from DAOs.gamesDAO import GameDAO
 from DAOs.killsDAO import KillDAO
+from DAOs.playersDAO import PlayerDAO
 from Models.games import Game
 from Models.kills import Kill
 
@@ -28,16 +28,17 @@ def playersNearTo(userID, radius):
         return False
     
 def startGame(userID, freq):
-    new_game = Game()
-    new_game.setFrequency(freq)
+    if GAMES_COLLECTION.count() == 1:
+        return False
+    else:
+        new_game = Game()
+        new_game.setFrequency(freq)
+        
+        gamesDAO.createGame(new_game)
+        
+        playerDAO.updatePlayer(userID, "isAdmin", True)
+        return True
     
-    gamesDAO.createGame(new_game)
-    
-    playerDAO.updatePlayer(userID, "isAdmin", True)
-    
-    #PLAYERS_COLLECTION.update({"userID": userID}, {"$set": {"isAdmin":True}})
-    
-
 #restarting game with current config, if user is admin    
 def restartGame(userID, new_freq):
     cur_player = playerDAO.getPlayer(userID)
@@ -97,6 +98,13 @@ def killPlayer(killer_userID, victim_userID):
 #returns current location in a list. Format: [latitude, longitude]    
 def getCurrentLocation(userID):
     cur_player = playerDAO.getPlayer(userID)
-    cur_location = cur_player["location"]
+    cur_location = cur_player["location_2d"]
     return cur_location
+
+def wipeDatabase():
+    #FOR TESTING PURPOSES ONLY!!!! Not linked to any URL; must be manually configured
+    GAMES_COLLECTION.remove()
+    PLAYERS_COLLECTION.remove()
+    USERS_COLLECTION.remove()
+    KILLS_COLLECTION.remove()
 

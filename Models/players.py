@@ -58,8 +58,9 @@ class Player(object):
         return self.location
     
     def setLocation(self, latitude, longitude):
-        self.location.append(latitude)
-        self.location.append(longitude)
+        #self.location.append(latitude)
+        #self.location.append(longitude)
+        self.location= [latitude, longitude]
         
     def isAdmin(self):
         return self.isAdmin

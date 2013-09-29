@@ -25,12 +25,12 @@ class GameDAO(object):
         GAMES_COLLECTION.insert(cur_game)
         
     def switchDayNight(self):
-        cur_game = self.getGame()
+        cur_game = GAMES_COLLECTION.find_one()
         if cur_game["isNight"] == True:
             GAMES_COLLECTION.update({}, {"$set": {"isNight": False}})
         else:
             GAMES_COLLECTION.update({}, {"$set": {"isNight": True}})
-        return
+        return "Day/Night Switched."
     
     def getGame(self):
         cur_game_dict = GAMES_COLLECTION.find_one()

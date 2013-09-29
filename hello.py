@@ -1,102 +1,129 @@
+import os
+
 from flask import Flask
 from pymongo import MongoClient
-from Models.user import User
-import os
+
+from DAOs.gamesDAO import GameDAO
+from DAOs.killsDAO import KillDAO
 from DAOs.playersDAO import PlayerDAO
 from DAOs.userDAO import UserDAO
-from DAOs.killsDAO import KillDAO
-from DAOs.gamesDAO import GameDAO
+from Models.kills import *
 from Models.players import *
 from Models.user import *
-from Models.kills import *
 from Service.GameService import *
 
+#hello.py serves as a config file that routes all HTTP traffic to appropriate functions/methods
 
 app = Flask(__name__)
 
+#DAO initialization for easy access
+playerDAO = PlayerDAO()
+usersDAO = UserDAO()
+killsDAO = KillDAO()
+gameDAO = GameDAO()
+
+    
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    '''
-    test_user = User()
-    test_user.setUsername("Ronak")
-    test_user.setPassword("testpass")
-    
-    client = MongoClient(os.environ.get('MONGOHQ_URL'))
-    db = client.app18266596
-    users_collection = db.users
-    
-    cur_user = {"name": test_user.getUsername(),
-                "password": test_user.getHashedPassword()
-                }
-    
-    users_collection.insert(cur_user)
-    #test_user.sendToDb()
-    '''
-    test_playerDAO = PlayerDAO()
-    test_usersDAO = UserDAO()
-    test_killsDAO = KillDAO()
-    test_gameDAO = GameDAO()
-    
-    test_gameDAO.switchDayNight();
-    
-    killPlayer("ronak223", "brosciusko")
-    
-    
-    #startGame("ronak223", 20)
-    #game = test_gameDAO.getGame()
-    
-    #loc = getCurrentLocation("ronak223")
-    
-    #startGame("ronak223", 20)
-    
-    #temp_list = playersNearTo("ronak223", 10)
-    #count = len(temp_list)
-    
-    #test_playerDAO.updatePlayer("brosciusko", "isDead", True)
-
-    #restartGame("ronak223", 16)
-    #placeVote("ronak223", "kmwilli")
-    #killPlayer("ronak223", "kmwilli")
-    '''
-    test_kill = Kill()
-    test_kill.setLocation(50, -190)
-    test_kill.setKillerID("ronak223")
-    test_kill.setVictimID("kevinwilliamson")
-    test_kill.setTimestamp()
-    
-    test_killsDAO.registerKill(test_kill)
-    '''
-    
-    '''
-    test_player = Player()
-    test_player.setUserID("brosciusko")
-    test_player.setAlignment("Townsperson")
-    test_player.setLocation(10, -59)
-    test_player.makeAdmin()
-    test_playerDAO.setPlayer(test_player)
-    '''
-    
-    #test_user = User()
-    #test_user.setUserID("ronak223")
-    #test_user.setPassword("ronakp")
-    
-    #test_usersDAO.registerUser(test_user)
-    #login_message = test_usersDAO.loginUser("ronak223", "ronakp")
-    #login_message = test_usersDAO.isLoggedIn("ronak223")
-    #isRegged = test_usersDAO.registerUser(test_user)
-    #isLoggedIn = test_usersDAO.loginUser(test_user.getUserID(), test_user.getHashedPassword())
-    #test_playerDAO.testDatabase()
-    #test_usersDAO.testUserConnection()
-    
-    
-    #return temp_list[0]["userID"]
-    #test_player = testingGetPlayer("ronak223")
     return "INDEX PAGE"
 
-@app.route('/hello')
-def hello():
-    return 'Hello World'
+#==============ROUTING FOR GameService METHODS===========#
+@app.route('/playersNearTo/<userID>/<int:radius>', methods=['GET', 'POST'])
+def getNearbyPlayers(userID, radius):
+    conf = playersNearTo(userID, radius)
+    if conf == False:
+        return "%s is not a werewolf, cannot get nearby players" % userID
+    else:
+        return conf
 
+@app.route('/startGame/<userID>/<int:freq>', methods=['GET', 'POST'])
+def newGame(userID, freq):
+    conf = startGame(userID, freq)
+    if conf == True:
+        return "New game started successfully"
+    else:
+        return "New game not created: a game is already in progress"
+    
+@app.route('/restartGame/<userID>/<int:new_freq>', methods=['GET', 'POST'])
+def restartCurrentGame(userID, new_freq):
+    conf = restartGame(userID, new_freq)
+    if conf == True:
+        return "Current game restarted successfully. Player configuration preserved."
+    else:
+        return "Could not restart game, $s does not have admin privaledges" % userID
+    
+@app.route('/getAllAlivePlayers', methods=['GET', 'POST'])
+def getAlivePlayers():
+    return getAllAlivePlayers()
+
+@app.route('/getAllVotablePlayers', methods=['GET', 'POST'])
+def getAllVotablePlayers():
+    return getVotablePlayers()
+
+@app.route('/placeVote/<voter_userID>/<votee_userID>', methods=['GET', 'POST'])
+def voteForPlayer(voter_userID, votee_userID):
+    conf = placeVote(voter_userID, votee_userID)
+    if conf == True:
+        return "Vote cast successfully"
+    else:
+        return "Vote not cast. %s not a Townsperson" % voter_userID
+
+@app.route('/killPlayer/<killer_userID>/<victim_userID>', methods=['GET', 'POST'])
+def kill(killer_userID, victim_userID):
+    conf = killPlayer(killer_userID, victim_userID)
+    if conf == True:
+        return "%s killed by %s successfully" % (victim_userID, killer_userID)
+    else:
+        return "Error: %s not a Werewolf or it is not night time" % killer_userID
+
+@app.route('/getCurrentLocation/<userID>', methods=['GET', 'POST'])
+def getLocationOf(userID):
+    return getCurrentLocation
+#========================================================#    
+
+
+#==============ROUTING FOR gamesDAO METHODS==============#
+@app.route('/dayNightSwitch', methods=['GET', 'POST'])
+def switchGameDayNightState():
+    return gameDAO.switchDayNight()
+#========================================================# 
+
+
+#==============ROUTING FOR killDAO METHODS===============#
+@app.route('/getAllKills', methods=['GET', 'POST'])
+def getTotalKills(userID):
+    return killsDAO.getAllKills()
+#========================================================# 
+
+#==============ROUTING FOR playerDAO METHODS===============#
+@app.route('/updatePlayer/<userID>/<field>/<value>', methods=['GET', 'POST'])
+def updateSpecificPlayerParam(userID, field, value):
+    return playerDAO.updatePlayer(userID, field, value)
+    
+@app.route('/createPlayer/<userID>/<latitude>/<longitude>/<alignment>', methods=['GET', 'POST'])
+def createPlayer(userID, latitude, longitude, alignment):
+    return playerDAO.setPlayer(userID, float(latitude), float(longitude), alignment)
+#==========================================================# 
+
+#==============ROUTING FOR userDAO METHODS===============#
+@app.route('/register/<userID>/<password>', methods=['GET', 'POST'])
+def regUser(userID, password):
+    return usersDAO.registerUser(userID, password)
+
+@app.route('/login/<userID>/<password>', methods=['GET', 'POST'])
+def logInUser(userID, password):
+    conf = usersDAO.loginUser(userID, password)
+    if(conf == True):
+        return "Logged in succesfully"
+    else:
+        return "Login unsuccessful"
+
+@app.route('/logout/<userID>', methods=['GET', 'POST'])
+def logOutUser(userID):
+    conf = usersDAO.logoutUser(userID)
+    if conf == True:
+        return "%s logged out successfully" % userID
+#========================================================# 
 
 if __name__ == "__main__":
     app.run(debug=True)
