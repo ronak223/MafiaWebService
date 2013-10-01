@@ -12,9 +12,15 @@ from Models.players import *
 from Models.user import *
 from Service.GameService import *
 
+from flask_basicauth import BasicAuth
 
 #hello.py serves as a config file that routes all HTTP traffic to appropriate functions/methods
 app = Flask(__name__)
+
+#app configs for BasicAuth.local accepted user/pass only set at registration, which is NOt protected
+app.config['BASIC_AUTH_USERNAME'] = 'u9123-u9uadaslkjd'
+app.config['BASIC_AUTH_PASSWORD'] = '0-9123jkaljddlasd'
+basic_auth = BasicAuth(app)
 
 #DAO initialization for easy access
 playerDAO = PlayerDAO()
@@ -24,11 +30,13 @@ gameDAO = GameDAO()
 
     
 @app.route('/', methods=['GET', 'POST'])
+@basic_auth.required
 def index():
     return "INDEX PAGE"
 
 #==============ROUTING FOR GameService METHODS===========#
 @app.route('/playersNearTo/<userID>/<int:radius>', methods=['GET', 'POST'])
+@basic_auth.required
 def getNearbyPlayers(userID, radius):
     conf = playersNearTo(userID, radius)
     if conf == False:
@@ -37,6 +45,7 @@ def getNearbyPlayers(userID, radius):
         return conf
 
 @app.route('/startGame/<userID>/<int:freq>', methods=['GET', 'POST'])
+@basic_auth.required
 def newGame(userID, freq):
     conf = startGame(userID, freq)
     if conf == True:
@@ -45,6 +54,7 @@ def newGame(userID, freq):
         return "New game not created: a game is already in progress"
     
 @app.route('/restartGame/<userID>/<int:new_freq>', methods=['GET', 'POST'])
+@basic_auth.required
 def restartCurrentGame(userID, new_freq):
     conf = restartGame(userID, new_freq)
     if conf == True:
@@ -53,14 +63,17 @@ def restartCurrentGame(userID, new_freq):
         return "Could not restart game, $s does not have admin privaledges" % userID
     
 @app.route('/getAllAlivePlayers', methods=['GET', 'POST'])
+@basic_auth.required
 def getAlivePlayers():
     return getAllAlivePlayers()
 
 @app.route('/getAllVotablePlayers', methods=['GET', 'POST'])
+@basic_auth.required
 def getAllVotablePlayers():
     return getVotablePlayers()
 
 @app.route('/placeVote/<voter_userID>/<votee_userID>', methods=['GET', 'POST'])
+@basic_auth.required
 def voteForPlayer(voter_userID, votee_userID):
     conf = placeVote(voter_userID, votee_userID)
     if conf == True:
@@ -69,6 +82,7 @@ def voteForPlayer(voter_userID, votee_userID):
         return "Vote not cast. %s not a Townsperson" % voter_userID
 
 @app.route('/killPlayer/<killer_userID>/<victim_userID>', methods=['GET', 'POST'])
+@basic_auth.required
 def kill(killer_userID, victim_userID):
     conf = killPlayer(killer_userID, victim_userID)
     if conf == True:
@@ -77,10 +91,12 @@ def kill(killer_userID, victim_userID):
         return "Error: %s not a Werewolf or it is not night time" % killer_userID
 
 @app.route('/getCurrentLocation/<userID>', methods=['GET', 'POST'])
+@basic_auth.required
 def getLocationOf(userID):
     return getCurrentLocation
 
 @app.route('/getHighscore', methods=['GET', 'POST'])
+@basic_auth.required
 def getHighScore():
     conf = getHighscorePlayer()
     return "%s has highscore of %d" % (conf["userID"], conf["points"])
@@ -89,6 +105,7 @@ def getHighScore():
 
 #==============ROUTING FOR gamesDAO METHODS==============#
 @app.route('/dayNightSwitch', methods=['GET', 'POST'])
+@basic_auth.required
 def switchGameDayNightState():
     return gameDAO.switchDayNight()
 #========================================================# 
@@ -96,16 +113,19 @@ def switchGameDayNightState():
 
 #==============ROUTING FOR killDAO METHODS===============#
 @app.route('/getAllKills', methods=['GET', 'POST'])
+@basic_auth.required
 def getTotalKills(userID):
     return killsDAO.getAllKills()
 #========================================================# 
 
 #==============ROUTING FOR playerDAO METHODS===============#
 @app.route('/updatePlayer/<userID>/<field>/<value>', methods=['GET', 'POST'])
+@basic_auth.required
 def updateSpecificPlayerParam(userID, field, value):
     return playerDAO.updatePlayer(userID, field, value)
     
 @app.route('/createPlayer/<userID>/<latitude>/<longitude>/<alignment>', methods=['GET', 'POST'])
+@basic_auth.required
 def createPlayer(userID, latitude, longitude, alignment):
     return playerDAO.setPlayer(userID, float(latitude), float(longitude), alignment)
 #==========================================================# 
@@ -113,9 +133,12 @@ def createPlayer(userID, latitude, longitude, alignment):
 #==============ROUTING FOR userDAO METHODS===============#
 @app.route('/register/<userID>/<password>', methods=['GET', 'POST'])
 def regUser(userID, password):
+    app.config['BASIC_AUTH_USERNAME'] = userID
+    app.config['BASIC_AUTH_PASSWORD'] = password
     return usersDAO.registerUser(userID, password)
 
 @app.route('/login/<userID>/<password>', methods=['GET', 'POST'])
+@basic_auth.required
 def logInUser(userID, password):
     conf = usersDAO.loginUser(userID, password)
     if(conf == True):
@@ -124,6 +147,7 @@ def logInUser(userID, password):
         return "Login unsuccessful"
 
 @app.route('/logout/<userID>', methods=['GET', 'POST'])
+@basic_auth.required
 def logOutUser(userID):
     conf = usersDAO.logoutUser(userID)
     if conf == True:
@@ -131,6 +155,7 @@ def logOutUser(userID):
 #========================================================# 
 
 #==============METHODS FOR BASIC AUTHORIZATION===============#
+
 
 #============================================================# 
 
