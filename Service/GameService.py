@@ -91,6 +91,7 @@ def killPlayer(killer_userID, victim_userID):
         
         #updating victim to dead
         playerDAO.updatePlayer(victim_userID, "isDead", True)
+        test_conf = playerDAO.increasePlayerPoints(killer_userID, 10)
         return True
     else:
         return False
@@ -100,6 +101,16 @@ def getCurrentLocation(userID):
     cur_player = playerDAO.getPlayer(userID)
     cur_location = cur_player["location_2d"]
     return cur_location
+
+#returns player with highest score
+def getHighscorePlayer():
+    cur_highscore_player = PLAYERS_COLLECTION.find_one()
+    
+    for player in PLAYERS_COLLECTION.find():
+        if player["points"] > cur_highscore_player["points"]:
+            cur_highscore_player = player
+            
+    return cur_highscore_player
 
 def wipeDatabase():
     #FOR TESTING PURPOSES ONLY!!!! Not linked to any URL; must be manually configured

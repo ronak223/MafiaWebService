@@ -12,8 +12,8 @@ from Models.players import *
 from Models.user import *
 from Service.GameService import *
 
-#hello.py serves as a config file that routes all HTTP traffic to appropriate functions/methods
 
+#hello.py serves as a config file that routes all HTTP traffic to appropriate functions/methods
 app = Flask(__name__)
 
 #DAO initialization for easy access
@@ -79,6 +79,11 @@ def kill(killer_userID, victim_userID):
 @app.route('/getCurrentLocation/<userID>', methods=['GET', 'POST'])
 def getLocationOf(userID):
     return getCurrentLocation
+
+@app.route('/getHighscore', methods=['GET', 'POST'])
+def getHighScore():
+    conf = getHighscorePlayer()
+    return "%s has highscore of %d" % (conf["userID"], conf["points"])
 #========================================================#    
 
 
@@ -124,6 +129,10 @@ def logOutUser(userID):
     if conf == True:
         return "%s logged out successfully" % userID
 #========================================================# 
+
+#==============METHODS FOR BASIC AUTHORIZATION===============#
+
+#============================================================# 
 
 if __name__ == "__main__":
     app.run(debug=True)

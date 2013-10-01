@@ -34,7 +34,8 @@ class PlayerDAO(object):
                       "isDead": playerObj.isDead,
                       "votedAgainst": playerObj.getVotedAgainst(),
                       "location_2d": playerObj.getLocation(),
-                      "isAdmin": playerObj.isAdmin
+                      "isAdmin": playerObj.isAdmin,
+                      "points": playerObj.getPoints()
                       }
         PLAYERS_COLLECTION.insert(cur_player)
         return "Player for user %s registered." % userID
@@ -61,6 +62,10 @@ class PlayerDAO(object):
     def updatePlayer(self, userID, field, value):
         PLAYERS_COLLECTION.update({"userID": userID}, {"$set": {field:value}})
         return "%s updated field %s with value %s" % (userID, field, value)
+    
+    def increasePlayerPoints(self, userID, points):
+        PLAYERS_COLLECTION.update({"userID": userID}, {"$inc": {"points": points}})
+        return "Increased %s points by %d" % (userID, points)
         
         
     

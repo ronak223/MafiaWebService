@@ -17,6 +17,7 @@ class Player(object):
         self.votedAgainst=""
         self.location=[]
         self.isAdmin = False
+        self.points = 0
         
     def isWerewolf(self):
         if(self.alignment=="Werewolf"):
@@ -67,6 +68,9 @@ class Player(object):
     
     def makeAdmin(self):
         self.isAdmin = True
+        
+    def getPoints(self):
+        return self.points
     
     
            
