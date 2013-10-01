@@ -32,7 +32,7 @@ gameDAO = GameDAO()
 @app.route('/', methods=['GET', 'POST'])
 @basic_auth.required
 def index():
-    return "INDEX PAGE"
+    return "Welcome to Ronak's Mafia Game Web Service."
 
 #==============ROUTING FOR GameService METHODS===========#
 @app.route('/playersNearTo/<userID>/<int:radius>', methods=['GET', 'POST'])
@@ -138,10 +138,11 @@ def regUser(userID, password):
     return usersDAO.registerUser(userID, password)
 
 @app.route('/login/<userID>/<password>', methods=['GET', 'POST'])
-@basic_auth.required
 def logInUser(userID, password):
     conf = usersDAO.loginUser(userID, password)
     if(conf == True):
+        app.config['BASIC_AUTH_USERNAME'] = userID
+        app.config['BASIC_AUTH_PASSWORD'] = password
         return "Logged in succesfully"
     else:
         return "Login unsuccessful"
@@ -153,11 +154,6 @@ def logOutUser(userID):
     if conf == True:
         return "%s logged out successfully" % userID
 #========================================================# 
-
-#==============METHODS FOR BASIC AUTHORIZATION===============#
-
-
-#============================================================# 
 
 if __name__ == "__main__":
     app.run(debug=True)
