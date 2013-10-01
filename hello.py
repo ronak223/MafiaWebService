@@ -29,10 +29,9 @@ killsDAO = KillDAO()
 gameDAO = GameDAO()
 
     
-@app.route('/', methods=['GET', 'POST'])
-@basic_auth.required
+@app.route('/')
 def index():
-    return "Welcome to Ronak's Mafia Game Web Service."
+    return "Welcome to Ronak's Mafia Game Web Service. Please register/login."
 
 #==============ROUTING FOR GameService METHODS===========#
 @app.route('/playersNearTo/<userID>/<int:radius>', methods=['GET', 'POST'])
