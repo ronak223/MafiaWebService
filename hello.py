@@ -41,7 +41,12 @@ def getNearbyPlayers(userID, radius):
     if conf == False:
         return "%s is not a werewolf, cannot get nearby players" % userID
     else:
-        return conf
+        nearby_list = conf
+        nearby_string = ""
+        for player in nearby_list:
+            nearby_string = nearby_string + player['userID'] + ", "
+        return nearby_string
+            
 
 @app.route('/startGame/<userID>/<int:freq>', methods=['GET', 'POST'])
 @basic_auth.required
@@ -64,12 +69,20 @@ def restartCurrentGame(userID, new_freq):
 @app.route('/getAllAlivePlayers', methods=['GET', 'POST'])
 @basic_auth.required
 def getAlivePlayers():
-    return getAllAlivePlayers()
+    alive_player_list = getAllAlivePlayers()
+    alive_string = ""
+    for player in alive_player_list:
+        alive_string = alive_string + player['userID'] + ", "
+    return alive_string
 
 @app.route('/getAllVotablePlayers', methods=['GET', 'POST'])
 @basic_auth.required
 def getAllVotablePlayers():
-    return getVotablePlayers()
+    votable_player_list = getVotablePlayers()
+    votable_string = ""
+    for player in votable_player_list:
+        votable_string = votable_string + player['userID'] + ","
+    return votable_string
 
 @app.route('/placeVote/<voter_userID>/<votee_userID>', methods=['GET', 'POST'])
 @basic_auth.required
@@ -87,12 +100,13 @@ def kill(killer_userID, victim_userID):
     if conf == True:
         return "%s killed by %s successfully" % (victim_userID, killer_userID)
     else:
-        return "Error: %s not a Werewolf or it is not night time" % killer_userID
+        return "Error: %s not a Werewolf" % killer_userID
 
 @app.route('/getCurrentLocation/<userID>', methods=['GET', 'POST'])
 @basic_auth.required
 def getLocationOf(userID):
-    return getCurrentLocation
+    location_tuple = getCurrentLocation(userID)
+    return "%s is at latitude %d and longitude %d" % (userID, location_tuple[0], location_tuple[1])
 
 @app.route('/getHighscore', methods=['GET', 'POST'])
 @basic_auth.required
@@ -113,8 +127,12 @@ def switchGameDayNightState():
 #==============ROUTING FOR killDAO METHODS===============#
 @app.route('/getAllKills', methods=['GET', 'POST'])
 @basic_auth.required
-def getTotalKills(userID):
-    return killsDAO.getAllKills()
+def getTotalKills():
+    kill_list = killsDAO.getAllKills()
+    killed_string = ""
+    for kill in kill_list:
+        killed_string = killed_string + kill['victimID'] + ", "
+    return killed_string
 #========================================================# 
 
 #==============ROUTING FOR playerDAO METHODS===============#

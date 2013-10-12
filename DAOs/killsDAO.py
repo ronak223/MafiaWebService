@@ -30,7 +30,7 @@ class KillDAO(object):
         
     def getAllKills(self):
         kills_list = []
-        for kill in KILLS_COLLECTION:
+        for kill in KILLS_COLLECTION.find():
             kills_list.append(kill)
         return kills_list
             

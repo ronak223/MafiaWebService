@@ -77,7 +77,7 @@ def placeVote(voter_userID, votee_userID):
 def killPlayer(killer_userID, victim_userID):
     killer = playerDAO.getPlayer(killer_userID)
     game = gamesDAO.getGame()
-    if killer["alignment"] == "Werewolf" and game["isNight"] == True:
+    if killer["alignment"] == "Werewolf":
         #getting location data for kill
         killer_loc = getCurrentLocation(killer_userID)
         
