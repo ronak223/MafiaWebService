@@ -100,7 +100,7 @@ def kill(killer_userID, victim_userID):
     if conf == True:
         return "%s killed by %s successfully" % (victim_userID, killer_userID)
     else:
-        return "Error: %s not a Werewolf or it is not night time" % killer_userID
+        return "Error: %s not a Werewolf" % killer_userID
 
 @app.route('/getCurrentLocation/<userID>', methods=['GET', 'POST'])
 @basic_auth.required
