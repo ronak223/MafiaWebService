@@ -131,7 +131,7 @@ def getTotalKills(userID):
     kill_list = killsDAO.getAllKills()
     killed_string = ""
     for player in kill_list:
-        killed_string = killed_string + player['userID'] + ", "
+        killed_string = killed_string + player['victimID'] + ", "
     return killed_string
 #========================================================# 
 
