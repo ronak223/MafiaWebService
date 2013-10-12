@@ -100,7 +100,8 @@ def kill(killer_userID, victim_userID):
 @app.route('/getCurrentLocation/<userID>', methods=['GET', 'POST'])
 @basic_auth.required
 def getLocationOf(userID):
-    return getCurrentLocation
+    location_tuple = getCurrentLocation
+    return "%s is at latitude %d and longitude %d" % (userID, location_tuple[0], location_tuple[1])
 
 @app.route('/getHighscore', methods=['GET', 'POST'])
 @basic_auth.required
@@ -122,7 +123,11 @@ def switchGameDayNightState():
 @app.route('/getAllKills', methods=['GET', 'POST'])
 @basic_auth.required
 def getTotalKills(userID):
-    return killsDAO.getAllKills()
+    kill_list = killsDAO.getAllKills()
+    killed_string = ""
+    for player in kill_list:
+        killed_string = killed_string + player['userID'] + ", "
+    return killed_string
 #========================================================# 
 
 #==============ROUTING FOR playerDAO METHODS===============#
