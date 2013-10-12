@@ -105,7 +105,7 @@ def kill(killer_userID, victim_userID):
 @app.route('/getCurrentLocation/<userID>', methods=['GET', 'POST'])
 @basic_auth.required
 def getLocationOf(userID):
-    location_tuple = getCurrentLocation
+    location_tuple = getCurrentLocation(userID)
     return "%s is at latitude %d and longitude %d" % (userID, location_tuple[0], location_tuple[1])
 
 @app.route('/getHighscore', methods=['GET', 'POST'])
