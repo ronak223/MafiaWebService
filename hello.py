@@ -127,7 +127,7 @@ def switchGameDayNightState():
 #==============ROUTING FOR killDAO METHODS===============#
 @app.route('/getAllKills', methods=['GET', 'POST'])
 @basic_auth.required
-def getTotalKills(userID):
+def getTotalKills():
     kill_list = killsDAO.getAllKills()
     killed_string = ""
     for kill in kill_list:
