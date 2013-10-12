@@ -41,7 +41,12 @@ def getNearbyPlayers(userID, radius):
     if conf == False:
         return "%s is not a werewolf, cannot get nearby players" % userID
     else:
-        return conf
+        nearby_list = conf
+        nearby_string = ""
+        for player in nearby_list:
+            nearby_string = nearby_string + player['userID'] + ", "
+        return nearby_string
+            
 
 @app.route('/startGame/<userID>/<int:freq>', methods=['GET', 'POST'])
 @basic_auth.required
