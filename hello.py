@@ -68,11 +68,16 @@ def getAlivePlayers():
     alive_string = ""
     for player in alive_player_list:
         alive_string = alive_string + player['userID'] + ", "
+    return alive_string
 
 @app.route('/getAllVotablePlayers', methods=['GET', 'POST'])
 @basic_auth.required
 def getAllVotablePlayers():
-    return getVotablePlayers()
+    votable_player_list = getVotablePlayers()
+    votable_string = ""
+    for player in votable_player_list:
+        votable_string = votable_string + player['userID'] + ","
+    return votable_string
 
 @app.route('/placeVote/<voter_userID>/<votee_userID>', methods=['GET', 'POST'])
 @basic_auth.required
