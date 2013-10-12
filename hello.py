@@ -130,8 +130,8 @@ def switchGameDayNightState():
 def getTotalKills(userID):
     kill_list = killsDAO.getAllKills()
     killed_string = ""
-    for player in kill_list:
-        killed_string = killed_string + player['victimID'] + ", "
+    for kill in kill_list:
+        killed_string = killed_string + kill['victimID'] + ", "
     return killed_string
 #========================================================# 
 
