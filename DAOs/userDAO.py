@@ -34,7 +34,7 @@ class UserDAO(object):
                 "loggedIn": False
                 }
         USERS_COLLECTION.insert(cur_user)
-        return "Player registered"
+        return "User %s registered" % userID
         
     def loginUser(self, userID, password):
         cur_user = USERS_COLLECTION.find_one({"userID": userID})

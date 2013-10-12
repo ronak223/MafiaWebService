@@ -64,7 +64,10 @@ def restartCurrentGame(userID, new_freq):
 @app.route('/getAllAlivePlayers', methods=['GET', 'POST'])
 @basic_auth.required
 def getAlivePlayers():
-    return getAllAlivePlayers()
+    alive_player_list = getAllAlivePlayers()
+    alive_string = ""
+    for player in alive_player_list:
+        alive_string = alive_string + player['userID'] + ", "
 
 @app.route('/getAllVotablePlayers', methods=['GET', 'POST'])
 @basic_auth.required
