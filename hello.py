@@ -1,6 +1,7 @@
 import os
 
-from flask import Flask
+from flask import Flask, jsonify, Response, json
+from flask_basicauth import BasicAuth
 from pymongo import MongoClient
 
 from DAOs.gamesDAO import GameDAO
@@ -12,7 +13,6 @@ from Models.players import *
 from Models.user import *
 from Service.GameService import *
 
-from flask_basicauth import BasicAuth
 
 #hello.py serves as a config file that routes all HTTP traffic to appropriate functions/methods
 app = Flask(__name__)
@@ -42,11 +42,7 @@ def getNearbyPlayers(userID, radius):
         return "%s is not a werewolf, cannot get nearby players" % userID
     else:
         nearby_list = conf
-        nearby_string = ""
-        for player in nearby_list:
-            nearby_string = nearby_string + player['userID'] + ", "
-        return nearby_string
-            
+        return Response(json.dumps(nearby_list),  mimetype='application/json')
 
 @app.route('/startGame/<userID>/<int:freq>', methods=['GET', 'POST'])
 @basic_auth.required
@@ -70,19 +66,14 @@ def restartCurrentGame(userID, new_freq):
 @basic_auth.required
 def getAlivePlayers():
     alive_player_list = getAllAlivePlayers()
-    alive_string = ""
-    for player in alive_player_list:
-        alive_string = alive_string + player['userID'] + ", "
-    return alive_string
+    return Response(json.dumps(alive_player_list),  mimetype='application/json')
+
 
 @app.route('/getAllVotablePlayers', methods=['GET', 'POST'])
 @basic_auth.required
 def getAllVotablePlayers():
     votable_player_list = getVotablePlayers()
-    votable_string = ""
-    for player in votable_player_list:
-        votable_string = votable_string + player['userID'] + ","
-    return votable_string
+    return Response(json.dumps(votable_player_list),  mimetype='application/json')
 
 @app.route('/placeVote/<voter_userID>/<votee_userID>', methods=['GET', 'POST'])
 @basic_auth.required
@@ -106,13 +97,17 @@ def kill(killer_userID, victim_userID):
 @basic_auth.required
 def getLocationOf(userID):
     location_tuple = getCurrentLocation(userID)
-    return "%s is at latitude %d and longitude %d" % (userID, location_tuple[0], location_tuple[1])
+    location_json = {'latitude': location_tuple[0],
+                     'longitude': location_tuple[1]
+                     }
+    return jsonify(location_json)
 
 @app.route('/getHighscore', methods=['GET', 'POST'])
 @basic_auth.required
 def getHighScore():
     conf = getHighscorePlayer()
-    return "%s has highscore of %d" % (conf["userID"], conf["points"])
+    resp = jsonify(conf)
+    return resp
 #========================================================#    
 
 
@@ -129,10 +124,9 @@ def switchGameDayNightState():
 @basic_auth.required
 def getTotalKills():
     kill_list = killsDAO.getAllKills()
-    killed_string = ""
-    for kill in kill_list:
-        killed_string = killed_string + kill['victimID'] + ", "
-    return killed_string
+    return Response(json.dumps(kill_list),  mimetype='application/json')
+
+    
 #========================================================# 
 
 #==============ROUTING FOR playerDAO METHODS===============#

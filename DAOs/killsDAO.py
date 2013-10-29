@@ -31,7 +31,12 @@ class KillDAO(object):
     def getAllKills(self):
         kills_list = []
         for kill in KILLS_COLLECTION.find():
-            kills_list.append(kill)
+            kill_dict = {'killerID': kill["killerID"],
+                         'victimID': kill["victimID"],
+                         'location': kill["location_2d"],
+                         'timestamp': kill["timestamp"]
+                         }
+            kills_list.append(kill_dict)
         return kills_list
             
         

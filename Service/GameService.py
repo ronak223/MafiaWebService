@@ -10,6 +10,7 @@ from DAOs.killsDAO import KillDAO
 from DAOs.playersDAO import PlayerDAO
 from Models.games import Game
 from Models.kills import Kill
+from Models.players import Player
 
 
 #globally accessible DAOs
@@ -22,7 +23,19 @@ def playersNearTo(userID, radius):
     #if cur_player.isWerewolf():
     if cur_player["alignment"] == "Werewolf":
         nearbyPlayersList = playerDAO.checkNearbyPlayersTo(userID, radius)
-        aug_list = [player for player in nearbyPlayersList if player["userID"] != userID]
+        aug_list = []
+        for player in nearbyPlayersList:
+            if player["userID"] != userID:
+                player_dict = {'userID':player["userID"],
+                               'alignment':player["alignment"],
+                               'isDead':player["isDead"],
+                               'votedAgainst':player["votedAgainst"],
+                               'location':player["location_2d"],
+                               'isAdmin':player["isAdmin"],
+                               'points':player["points"]
+                               }
+                aug_list.append(player_dict)
+                
         return aug_list
     else:
         return False
@@ -57,7 +70,15 @@ def getAllAlivePlayers():
     alive_players_list = []
     for player in PLAYERS_COLLECTION.find():
         if player["isDead"] == False:
-            alive_players_list.append(player)
+            player_dict = {'userID':player["userID"],
+                               'alignment':player["alignment"],
+                               'isDead':player["isDead"],
+                               'votedAgainst':player["votedAgainst"],
+                               'location':player["location_2d"],
+                               'isAdmin':player["isAdmin"],
+                               'points':player["points"]
+                               }
+            alive_players_list.append(player_dict)
     return alive_players_list
     
 def getVotablePlayers():
@@ -109,8 +130,16 @@ def getHighscorePlayer():
     for player in PLAYERS_COLLECTION.find():
         if player["points"] > cur_highscore_player["points"]:
             cur_highscore_player = player
-            
-    return cur_highscore_player
+    
+    player_dict = {'userID':cur_highscore_player["userID"],
+                               'alignment':cur_highscore_player["alignment"],
+                               'isDead':cur_highscore_player["isDead"],
+                               'votedAgainst':cur_highscore_player["votedAgainst"],
+                               'location':cur_highscore_player["location_2d"],
+                               'isAdmin':cur_highscore_player["isAdmin"],
+                               'points':cur_highscore_player["points"]
+                               }        
+    return player_dict
 
 def wipeDatabase():
     #FOR TESTING PURPOSES ONLY!!!! Not linked to any URL; must be manually configured
