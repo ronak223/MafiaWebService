@@ -34,6 +34,13 @@ class GameDAO(object):
     
     def getGame(self):
         cur_game_dict = GAMES_COLLECTION.find_one()
-        return cur_game_dict
+        if cur_game_dict == None:
+            return None
+        else:
+            cur_game = {'creationTimestamp':cur_game_dict['creationTimestamp'],
+                        'isNight':cur_game_dict['isNight'],
+                        'dayNightFrequency': cur_game_dict['dayNightFrequency']
+                        }
+            return cur_game
         
         

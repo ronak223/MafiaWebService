@@ -116,6 +116,15 @@ def getHighScore():
 @basic_auth.required
 def switchGameDayNightState():
     return gameDAO.switchDayNight()
+
+@app.route('/getCurrentGame', methods=['GET', 'POST'])
+@basic_auth.required
+def getCurrentGame():
+    conf = gameDAO.getGame()
+    if conf == None:
+        return "No games"
+    else:
+        return jsonify(conf)
 #========================================================# 
 
 
