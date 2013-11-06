@@ -38,6 +38,8 @@ class UserDAO(object):
         
     def loginUser(self, userID, password):
         cur_user = USERS_COLLECTION.find_one({"userID": userID})
+        if cur_user == None:
+            return False
         if(MD5.new(password).hexdigest() == cur_user["password"]):
             USERS_COLLECTION.update({"userID": userID}, {"$set": {"loggedIn":True}})
             return True
