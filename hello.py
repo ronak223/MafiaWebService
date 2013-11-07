@@ -18,8 +18,8 @@ from Service.GameService import *
 app = Flask(__name__)
 
 #app configs for BasicAuth.local accepted user/pass only set at registration, which is NOt protected
-app.config['BASIC_AUTH_USERNAME'] = 'u9123-u9uadaslkjd'
-app.config['BASIC_AUTH_PASSWORD'] = '0-9123jkaljddlasd'
+app.config['BASIC_AUTH_USERNAME'] = 'specialkeythatnoonewilleverknow'
+app.config['BASIC_AUTH_PASSWORD'] = 'specialerpasswordisawesome'
 basic_auth = BasicAuth(app)
 
 #DAO initialization for easy access
@@ -153,16 +153,16 @@ def createPlayer(userID, latitude, longitude, alignment):
 #==============ROUTING FOR userDAO METHODS===============#
 @app.route('/register/<userID>/<password>', methods=['GET', 'POST'])
 def regUser(userID, password):
-    app.config['BASIC_AUTH_USERNAME'] = userID
-    app.config['BASIC_AUTH_PASSWORD'] = password
+    #app.config['BASIC_AUTH_USERNAME'] = userID
+    #app.config['BASIC_AUTH_PASSWORD'] = password
     return usersDAO.registerUser(userID, password)
 
 @app.route('/login/<userID>/<password>', methods=['GET', 'POST'])
 def logInUser(userID, password):
     conf = usersDAO.loginUser(userID, password)
     if(conf == True):
-        app.config['BASIC_AUTH_USERNAME'] = userID
-        app.config['BASIC_AUTH_PASSWORD'] = password
+        #app.config['BASIC_AUTH_USERNAME'] = userID
+        #app.config['BASIC_AUTH_PASSWORD'] = password
         return "Logged in succesfully"
     else:
         return "Login unsuccessful"
