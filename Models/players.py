@@ -14,7 +14,7 @@ class Player(object):
         self.alignment=None
         self.isDead = False
         #to show who has player has voted to kill
-        self.votedAgainst=""
+        self.votedAgainst="None"
         self.location=[]
         self.isAdmin = False
         self.points = 0
