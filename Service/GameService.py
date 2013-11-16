@@ -145,7 +145,10 @@ def getHighscorePlayer():
 
 #sets up the game, once amount of players is known, and gets current coordinates, as well as sets proper TP/WW ratio
 def initializeGame():
-    all_players = PLAYERS_COLLECTION.find()
+    all_players = []
+    for player in PLAYERS_COLLECTION.find():
+        all_players.append(player)
+        
     needed_werewolves = len(all_players) / 3
     
     count = 0
@@ -161,6 +164,11 @@ def initializeGame():
     for i in rand_number_list:
         cur_player_id = (all_players[i])["userID"]
         playerDAO.updatePlayer(cur_player_id, "alignment", "Werewolf")
+    
+    if count > 0:
+        return True
+    else:
+        return False
 
 def wipeDatabase():
     #FOR TESTING PURPOSES ONLY!!!! Not linked to any URL; must be manually configured

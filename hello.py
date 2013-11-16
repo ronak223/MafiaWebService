@@ -112,7 +112,11 @@ def getHighScore():
 @app.route('/initGame', methods=['GET', 'POST'])
 @basic_auth.required
 def initGame():
-    initializeGame()
+    conf = initializeGame()
+    if conf == True:
+        return "true"
+    else:
+        return "false"
 #========================================================#    
 
 
