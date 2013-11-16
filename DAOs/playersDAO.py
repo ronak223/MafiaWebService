@@ -55,7 +55,15 @@ class PlayerDAO(object):
     def getAllPlayers(self):
         player_list = []
         for player in PLAYERS_COLLECTION.find():
-            player_list.append(player)
+            cur_player = {"userID": player["userID"],
+                          "alignment": player["alignment"],
+                          "isDead": player["isDead"],
+                          "votedAgainst": player["votedAgainst"],
+                          "location_2d": player["location_2d"],
+                          "isAdmin": player["isAdmin"],
+                          "points": player["points"]
+                          }
+            player_list.append(cur_player)
         return player_list
     
     def checkNearbyPlayersTo(self, userID, radius):
