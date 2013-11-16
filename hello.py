@@ -161,6 +161,11 @@ def getAllPlayers():
     jsoned_list = {"response": player_list}
     
     return jsonify(jsoned_list)
+
+@app.route('getSpecificValue/<userID>/<field>', methods=['GET', 'POST'])
+@basic_auth.required
+def getSpecificValue(userID, field):
+    return playerDAO.checkValue(userID, field)
 #==========================================================# 
 
 #==============ROUTING FOR userDAO METHODS===============#
