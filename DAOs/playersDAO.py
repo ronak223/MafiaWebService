@@ -52,6 +52,12 @@ class PlayerDAO(object):
         
         return cur_player_dict
     
+    def getAllPlayers(self):
+        player_list = []
+        for player in PLAYERS_COLLECTION.find():
+            player_list.append(player)
+        return player_list
+    
     def checkNearbyPlayersTo(self, userID, radius):
         nearbyPlayerList = []
         cur_player_dict = PLAYERS_COLLECTION.find_one({"userID": userID})

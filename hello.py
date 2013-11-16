@@ -148,6 +148,14 @@ def updateSpecificPlayerParam(userID, field, value):
 @basic_auth.required
 def createPlayer(userID, latitude, longitude, alignment):
     return playerDAO.setPlayer(userID, float(latitude), float(longitude), alignment)
+
+@app.route('/getAllPlayers', methods=['GET', 'POST'])
+@basic_auth.required
+def getAllPlayers():
+    player_list = playerDAO.getAllPlayers()
+    jsoned_list = {"response": player_list}
+    
+    return jsonify(jsoned_list)
 #==========================================================# 
 
 #==============ROUTING FOR userDAO METHODS===============#
