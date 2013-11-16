@@ -80,6 +80,10 @@ class PlayerDAO(object):
     def increasePlayerPoints(self, userID, points):
         PLAYERS_COLLECTION.update({"userID": userID}, {"$inc": {"points": points}})
         return "Increased %s points by %d" % (userID, points)
+    
+    def checkValue(self, userID, field):
+        cur_player_dict = PLAYERS_COLLECTION.find_one({"userID": userID})
+        return cur_player_dict[field]
         
         
     

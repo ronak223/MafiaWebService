@@ -4,6 +4,8 @@ Created on Sep 25, 2013
 @author: Ronak
 '''
 
+from Crypto.Random.random import randrange
+
 from DAOs import *
 from DAOs.gamesDAO import GameDAO
 from DAOs.killsDAO import KillDAO
@@ -140,6 +142,25 @@ def getHighscorePlayer():
                                'points':cur_highscore_player["points"]
                                }        
     return player_dict
+
+#sets up the game, once amount of players is known, and gets current coordinates, as well as sets proper TP/WW ratio
+def initializeGame():
+    all_players = PLAYERS_COLLECTION.find()
+    needed_werewolves = len(all_players) / 3
+    
+    count = 0
+    rand_number_list = []
+    while count != needed_werewolves:
+        rand = randrange(0, len(all_players))
+        if rand in rand_number_list:
+            continue
+        else:
+            rand_number_list.append(rand)
+            count += 1
+            
+    for i in rand_number_list:
+        cur_player_id = (all_players[i])["userID"]
+        playerDAO.updatePlayer(cur_player_id, "alignment", "Werewolf")
 
 def wipeDatabase():
     #FOR TESTING PURPOSES ONLY!!!! Not linked to any URL; must be manually configured

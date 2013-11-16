@@ -108,6 +108,11 @@ def getHighScore():
     conf = getHighscorePlayer()
     resp = jsonify(conf)
     return resp
+
+@app.route('/initGame', methods=['GET', 'POST'])
+@basic_auth.required
+def initGame():
+    initializeGame()
 #========================================================#    
 
 
