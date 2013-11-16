@@ -165,7 +165,11 @@ def getAllPlayers():
 @app.route('/getSpecificValue/<userID>/<field>', methods=['GET', 'POST'])
 @basic_auth.required
 def getSpecificValue(userID, field):
-    return "" + playerDAO.checkValue(userID, field)
+    conf = playerDAO.checkValue(userID, field)
+    if conf == True:
+        return "true"
+    else:
+        return "false"
 #==========================================================# 
 
 #==============ROUTING FOR userDAO METHODS===============#
