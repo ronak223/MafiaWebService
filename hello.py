@@ -138,11 +138,11 @@ def getCurrentGame():
 @app.route('/isGameActive', methods=['GET', 'POST'])
 @basic_auth.required
 def getGameActivity():
-   conf = gamesDAO.getGameActivity()
-   if conf == True:
-       return "true"
-   else:
-       return "false"
+    conf = gamesDAO.getGameActivity()
+    if conf == True:
+        return "true"
+    else:
+        return "false"
 #========================================================# 
 
 

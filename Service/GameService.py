@@ -166,6 +166,7 @@ def initializeGame():
         playerDAO.updatePlayer(cur_player_id, "alignment", "Werewolf")
     
     if count > 0:
+        GAMES_COLLECTION.update({}, {"$set": {"isActive": True}})
         return True
     else:
         return False
