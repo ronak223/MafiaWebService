@@ -18,6 +18,7 @@ class Game(object):
         self.creationTimestamp = datetime.now()
         self.dayNightFrequency = 24
         self.isNight = False
+        self.isActive = False
         
     def getStartTimestamp(self):
         return self.creationTimestamp
