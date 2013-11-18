@@ -88,6 +88,7 @@ class PlayerDAO(object):
     def updateLocation(self, userID, latitude, longitude):
         new_loc = [latitude, longitude]
         PLAYERS_COLLECTION.update({"userID": userID}, {"$set": {"location_2d": new_loc}})
+        return True
         
         
         
