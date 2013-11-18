@@ -84,6 +84,11 @@ class PlayerDAO(object):
     def checkValue(self, userID, field):
         cur_player_dict = PLAYERS_COLLECTION.find_one({"userID": userID})
         return cur_player_dict[field]
+    
+    def updateLocation(self, userID, latitude, longitude):
+        new_loc = [latitude, longitude]
+        PLAYERS_COLLECTION.update({"userID": userID}, {"$set": {"location_2d": new_loc}})
+        
         
         
     
