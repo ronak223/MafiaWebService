@@ -184,10 +184,10 @@ def getSpecificValue(userID, field):
     else:
         return "false"
     
-@app.route('/updateLocation/<userID>/<float:latitude>/<float:longitude>', methods=['GET', 'POST'])
+@app.route('/updateLocation/<userID>/<latitude>/<longitude>', methods=['GET', 'POST'])
 @basic_auth.required
 def updateLoc(userID, latitude, longitude):
-    conf = playerDAO.updateLocation(userID, latitude, longitude);
+    conf = playerDAO.updateLocation(userID, float(latitude), float(longitude))
     if conf == True:
         return "true"
     else:
