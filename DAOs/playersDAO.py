@@ -41,16 +41,20 @@ class PlayerDAO(object):
         return "Player for user %s registered." % userID
         
     def getPlayer(self, userID):
-        #retrieving player object from database, and returning a newly constructed Player object
         cur_player_dict = PLAYERS_COLLECTION.find_one({"userID": userID})
-        #cur_player_obj = cur_player_dict["userID"]
-        #cur_player_obj.setPlayerID(userID)
-        #cur_player_obj.setAlignment(cur_player_dict["alignment"])
-        #cur_player_obj.isDead = cur_player_dict["isDead"]
-        #cur_player_obj.votedAgainst = cur_player_dict["votedAgainst"]
-        #cur_player_obj.setLocation(cur_player_dict["location"][0], cur_player_dict["location"][1])
         
-        return cur_player_dict
+        if cur_player_dict == None:
+            return False
+        else:
+            cur_player = {"userID": cur_player_dict['userID'],
+                      "alignment": cur_player_dict['alignment'],
+                      "isDead": cur_player_dict['isDead'],
+                      "votedAgainst": cur_player_dict['votedAgainst'],
+                      "location_2d": cur_player_dict['location_2d'],
+                      "isAdmin": cur_player_dict['isAdmin'],
+                      "points": cur_player_dict['points']
+                      }
+        return cur_player
     
     def getAllPlayers(self):
         player_list = []

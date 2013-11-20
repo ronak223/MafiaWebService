@@ -192,6 +192,25 @@ def updateLoc(userID, latitude, longitude):
         return "true"
     else:
         return "false"
+    
+@app.route('/doesPlayerExist/<userID>', methods = ['GET', 'POST'])
+@basic_auth.required
+def doesPlayerExist(userID):
+    conf = playerDAO.getPlayer(userID)
+    if conf == False:
+        return "false"
+    else:
+        return "true"
+    
+@app.route('/getPlayer/<userID>', methods = ['GET', 'POST'])
+@basic_auth.required
+def getSpecificPlayer(userID):
+    conf = playerDAO.getPlayer(userID)
+    if conf == False:
+        return "false"
+    else:
+        return jsonify(conf)
+
 #==========================================================# 
 
 #==============ROUTING FOR userDAO METHODS===============#
