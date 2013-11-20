@@ -238,5 +238,11 @@ def logOutUser(userID):
         return "%s logged out successfully" % userID
 #========================================================# 
 
+#========SUPER DUPER VOLATILE URL ROUTING THAT SHOULDN'T BE USED OUTSIDE OF TESTING======#
+@app.route('/deathToDatabase', methods=['GET', 'POST'])
+@basic_auth.required
+def deathToDB():
+    wipeDatabase()
+
 if __name__ == "__main__":
     app.run(debug=True)
