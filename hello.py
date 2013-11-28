@@ -39,10 +39,12 @@ def index():
 def getNearbyPlayers(userID, radius):
     conf = playersNearTo(userID, radius)
     if conf == False:
-        return "%s is not a werewolf, cannot get nearby players" % userID
+        return "false"
     else:
         nearby_list = conf
-        return Response(json.dumps(nearby_list),  mimetype='application/json')
+        jsoned_list = {"response": nearby_list}
+    
+    return jsonify(jsoned_list)
 
 @app.route('/startGame/<userID>/<int:freq>', methods=['GET', 'POST'])
 @basic_auth.required
