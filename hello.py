@@ -40,6 +40,8 @@ def getNearbyPlayers(userID, radius):
     conf = playersNearTo(userID, radius)
     if conf == False:
         return "false"
+    elif len(conf) == 0:
+        return "false"
     else:
         nearby_list = conf
         jsoned_list = {"response": nearby_list}
