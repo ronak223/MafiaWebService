@@ -3,8 +3,11 @@ Created on Sep 25, 2013
 
 @author: Ronak
 '''
+from datetime import datetime, timedelta
+
 from DAOs import *
 from Models.games import Game
+
 
 class GameDAO(object):
     '''
@@ -54,5 +57,30 @@ class GameDAO(object):
                 return True
             else:
                 return False
+            
+    def currentTimeState(self):
+        cur_game_dict = GAMES_COLLECTION.find_one()
+        if cur_game_dict == None:
+            return None
+        else:
+            start_time = cur_game_dict['creationTimestamp']
+            freq = cur_game_dict['dayNightFrequency']
+            cur_time = datetime.now()
+            
+            datetime_elapsed = cur_time - start_time 
+            hours_elapsed = datetime_elapsed.total_seconds() // 3600
+            total_freqs = hours_elapsed // freq 
+            if total_freqs % 2 == 0:
+                return "day"
+            else:
+                return "night"
+            
+            
+            
+            
+            
+            
+        
+        
         
         

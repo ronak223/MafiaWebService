@@ -147,6 +147,15 @@ def getGameActivity():
         return "true"
     else:
         return "false"
+    
+@app.route('/getTimeState', methods=['GET', 'POST'])
+@basic_auth.required
+def getCurTimeState():
+    conf = gamesDAO.currentTimeState()
+    if conf == None:
+        return "false"
+    else:
+        return conf
 #========================================================# 
 
 
@@ -230,7 +239,7 @@ def logInUser(userID, password):
     if(conf == True):
         #app.config['BASIC_AUTH_USERNAME'] = userID
         #app.config['BASIC_AUTH_PASSWORD'] = password
-        return "Logged in succesfully"
+        return "Logged in successfully"
     else:
         return "Login unsuccessful"
 

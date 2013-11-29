@@ -96,7 +96,6 @@ def placeVote(voter_userID, votee_userID):
     else:
         return False
 
-#TODO: killPlayer can only be done if killer is werewolf and game state is night!
 def killPlayer(killer_userID, victim_userID):
     killer = playerDAO.getPlayer(killer_userID)
     game = gamesDAO.getGame()
