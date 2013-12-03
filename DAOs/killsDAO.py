@@ -19,7 +19,6 @@ class KillDAO(object):
         
     def registerKill(self, killObj):
         #registers a single kill in DB
-        #TODO: Figure out why location won't work here!
         cur_kill = {"killerID": killObj.getKillerID(),
                       "victimID": killObj.getVictimID(),
                       "timestamp": killObj.getTimestamp(),

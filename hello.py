@@ -70,7 +70,8 @@ def restartCurrentGame(userID, new_freq):
 @basic_auth.required
 def getAlivePlayers():
     alive_player_list = getAllAlivePlayers()
-    return Response(json.dumps(alive_player_list),  mimetype='application/json')
+    conf = {"response": alive_player_list}
+    return jsonify(conf)
 
 
 @app.route('/getAllVotablePlayers', methods=['GET', 'POST'])
