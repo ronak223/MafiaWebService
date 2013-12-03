@@ -122,6 +122,12 @@ def initGame():
         return "true"
     else:
         return "false"
+    
+@app.route('/getKillCount', methods=['GET', 'POST'])
+@basic_auth.required
+def getKillCount():
+    kill_count = getNumberOfKills()
+    return "%i" % kill_count
 #========================================================#    
 
 

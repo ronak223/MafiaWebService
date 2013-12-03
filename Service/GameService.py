@@ -170,6 +170,10 @@ def initializeGame():
     else:
         return False
 
+def getNumberOfKills():
+    total_kills = KILLS_COLLECTION.count()
+    return total_kills
+
 def wipeDatabase():
     #FOR TESTING PURPOSES ONLY!!!! Not linked to any URL; must be manually configured
     GAMES_COLLECTION.remove()
