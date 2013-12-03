@@ -60,13 +60,18 @@ def restartGame(userID, new_freq):
     if cur_player["isAdmin"] == True:
         GAMES_COLLECTION.remove()
         KILLS_COLLECTION.remove()
-        PLAYERS_COLLECTION.update({}, {"$set": {"votedAgainst":""}}, upsert=False, multi=True)
+        PLAYERS_COLLECTION.update({}, {"$set": {"votedAgainst":"None"}}, upsert=False, multi=True)
         PLAYERS_COLLECTION.update({}, {"$set": {"isDead":False}}, upsert=False, multi=True)
         startGame(userID, new_freq)
         return True
     else:
         #means that player that initiated restart was NOT admin
         return False
+
+def concludeGame():
+    GAMES_COLLECTION.remove()
+    KILLS_COLLECTION.remove()
+    PLAYERS_COLLECTION.remove()
 
 def getAllAlivePlayers():
     alive_players_list = []

@@ -65,6 +65,12 @@ def restartCurrentGame(userID, new_freq):
         return "Current game restarted successfully. Player configuration preserved."
     else:
         return "Could not restart game, $s does not have admin privaledges" % userID
+
+@app.route('/concludeGame', methods=['GET', 'POST'])
+@basic_auth.required
+def concludeGame():
+    conf = concludeGame()
+    return conf
     
 @app.route('/getAllAlivePlayers', methods=['GET', 'POST'])
 @basic_auth.required
