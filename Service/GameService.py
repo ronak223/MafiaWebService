@@ -72,6 +72,7 @@ def concludeGame():
     GAMES_COLLECTION.remove()
     KILLS_COLLECTION.remove()
     PLAYERS_COLLECTION.remove()
+    return True
 
 def getAllAlivePlayers():
     alive_players_list = []
