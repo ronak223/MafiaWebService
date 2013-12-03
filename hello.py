@@ -68,7 +68,7 @@ def restartCurrentGame(userID, new_freq):
 
 @app.route('/concludeGame', methods=['GET', 'POST'])
 @basic_auth.required
-def concludeGame():
+def concludeCurGame():
     conf = concludeGame()
     return conf
     
