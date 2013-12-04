@@ -93,11 +93,54 @@ def getVotablePlayers():
     votable_players_list = getAllAlivePlayers()
     return votable_players_list
 
-#places vote if voter is a Townsperson
+#places vote if voter
 def placeVote(voter_userID, votee_userID):
     cur_player = playerDAO.getPlayer(voter_userID)
     playerDAO.updatePlayer(voter_userID, "votedAgainst", votee_userID)
+    
+    #need to check if all players have voted, and if so, count amount of times each name appears and kill accordingly
+    #then, set all players' "votedAgainst" to "None"
+    voted_against_list = []
+    for player in PLAYERS_COLLECTION.find():
+        voted_against_list.append(player["votedAgainst"])
+    
+    if "None" in voted_against_list or len(voted_against_list) == 0:
+        return True
+    else:
+        #count for highest voted against player, and kill them
+        cur_voted_against_player = ""
+        cur_voted_against_count = 0
+    
+        
+        for voted_against in voted_against_list:
+            temp_counter = voted_against_list.count(voted_against)
+            if temp_counter > cur_voted_against_count:
+                cur_voted_against_player = voted_against
+                cur_voted_against_count = temp_counter
+        
+        hangPlayer(cur_voted_against_player)
+        
+        for cur_player in PLAYERS_COLLECTION.find():
+            playerDAO.updatePlayer(cur_player["userID"], "votedAgainst", "None")
+            
+        return True
+
+def hangPlayer(victim_userID):
+    killer = "Voters"
+    loc = [0,0]
+    
+    cur_kill = Kill()
+    cur_kill.setKillerID(killer)
+    cur_kill.setVictimID(victim_userID)
+    cur_kill.setTimestamp()
+    cur_kill.setLocation(loc[0], loc[1])
+    
+    killDAO.registerKill(cur_kill)
+    
+    #updating victim to dead
+    playerDAO.updatePlayer(victim_userID, "isDead", True)
     return True
+    
 
 def killPlayer(killer_userID, victim_userID):
     killer = playerDAO.getPlayer(killer_userID)
