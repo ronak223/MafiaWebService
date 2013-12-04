@@ -96,11 +96,8 @@ def getVotablePlayers():
 #places vote if voter is a Townsperson
 def placeVote(voter_userID, votee_userID):
     cur_player = playerDAO.getPlayer(voter_userID)
-    if cur_player["alignment"] == "Townsperson":
-        playerDAO.updatePlayer(voter_userID, "votedAgainst", votee_userID)
-        return True
-    else:
-        return False
+    playerDAO.updatePlayer(voter_userID, "votedAgainst", votee_userID)
+    return True
 
 def killPlayer(killer_userID, victim_userID):
     killer = playerDAO.getPlayer(killer_userID)
